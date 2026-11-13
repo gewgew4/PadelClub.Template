@@ -38,6 +38,10 @@ internal class Program
         var logger = host.Services.GetRequiredService<ILogger<Program>>();
         logger.LogInformation("PadelClub application started.");
 
+        // Lo siguiente es un ejemplo de cómo inicializar la base de datos al iniciar la aplicación.
+        await host.Services.InicializarBaseDeDatosAsync();
+        logger.LogInformation("Base de datos verificada y migraciones aplicadas.");
+
         // TODO (Punto 6): Capturar las fallas técnicas en un único try/catch dentro del loop principal,
         // registrarlas con logger y mostrar un mensaje amigable sin cerrar la aplicación.
         while (true)

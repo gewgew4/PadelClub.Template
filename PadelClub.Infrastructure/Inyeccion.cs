@@ -16,4 +16,16 @@ public static class Inyeccion
         services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajo>();
         return services;
     }
+
+    /// <summary>
+    /// Crea la base de datos si no existe y aplica las migraciones pendientes de Entity Framework Core.
+    /// </summary>
+    public static async Task InicializarBaseDeDatosAsync(this IServiceProvider services)
+    {
+        await using var alcance = services.CreateAsyncScope();
+        var contexto = alcance.ServiceProvider.GetRequiredService<PadelClubDbContext>();
+        var pendientes = await contexto.Database.GetPendingMigrationsAsync();
+        if (pendientes.Any())
+            await contexto.Database.MigrateAsync();
+    }
 }
